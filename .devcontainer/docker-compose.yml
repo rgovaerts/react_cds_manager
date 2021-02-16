@@ -1,0 +1,26 @@
+version: '3'
+services:
+  proxy:
+    image: nginx:stable
+    volumes:
+      - "./nginx.conf:/etc/nginx/nginx.conf"
+    ports:
+      - "80:80"
+
+  api:
+    image: mockserver/mockserver:mockserver-5.11.2
+    environment:
+      - MOCKSERVER_WATCH_INITIALIZATION_JSON=true
+      - MOCKSERVER_INITIALIZATION_JSON_PATH=/tmp/mockserver_config.json
+    volumes:
+      - "./mockserver_config.json:/tmp/mockserver_config.json"
+    expose:
+      - "1080"
+
+  web:
+    build: ..
+    command: "tail -f /dev/null"
+    volumes:
+    - "..:/app"
+    expose:
+      - "3000"

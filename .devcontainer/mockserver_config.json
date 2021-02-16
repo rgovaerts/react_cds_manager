@@ -1,0 +1,44 @@
+[
+    {
+        "httpRequest": {
+            "path": "/cds-services"
+        },
+        "httpResponse": {
+            "delay": {
+                "timeUnit": "SECONDS",
+                "value": 1
+            },
+            "statusCode": 200,
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "values": ["application/json; charset=utf-8"]
+                }
+            ],
+            "body": {
+                "services": [
+                    {
+                        "id": "1",
+                        "hook": "patient-view",
+                        "title": "Patient view",
+                        "description": "Displays which patient is viewed"
+                    },
+                    {
+                        "id": "2",
+                        "hook": "appointment-book",
+                        "title": "Availibilty checker",
+                        "description": "Checks the agenda for availability"
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "httpRequest": {
+            "path": "/simpleSecond"
+        },
+        "httpResponse": {
+            "body": "some second response"
+        }
+    }
+]

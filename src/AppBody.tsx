@@ -6,6 +6,8 @@ import axios from 'axios';
 import { CdsServiceCard } from './CdsServiceCard';
 import { createStyles, Grid, makeStyles, Theme } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
+import { useApi } from './ApiContext';
+import { useAuth } from './AuthContext';
 
 
 interface CdsService {
@@ -18,10 +20,6 @@ interface CdsService {
 
 interface ServerResponse {
   services: CdsService[]
-}
-
-interface AppPageProps {
-  apiBaseUrl: string
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -39,46 +37,46 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 
-export const AppBody = ({ apiBaseUrl } : AppPageProps) => {
+export const AppBody = () => {
 
   const [cdsServices, setCdsServices] = useState(new Array<CdsService>());
   const [errorFetchingData, setErrorFetchingData] = useState(false);
   const [loading, setloading] = useState(false)
   const classes = useStyles();
-  
+  const apiBaseUrl = useApi();
+  const { authToken } = useAuth();
 
-  
+
   useEffect(() => {
     setloading(true);
-    axios.get<ServerResponse>(apiBaseUrl + "/cds-services")
-    .then(res => {
-      setCdsServices(res.data.services);
-    }).catch(e => {
-      setErrorFetchingData(true);
-      console.log(e);
-    }).finally(() => {
-      setloading(false);
-    })
-  }, [apiBaseUrl]);
+    axios.get<ServerResponse>(apiBaseUrl + "/cds-services", { headers: { Authorization: 'Bearer '.concat(authToken ? authToken : '') } })
+      .then(res => {
+        setCdsServices(res.data.services);
+      }).catch(e => {
+        setErrorFetchingData(true);
+        console.trace(e);
+      }).finally(() => {
+        setloading(false);
+      })
+  }, [apiBaseUrl, authToken]);
 
 
-  if(loading) {
+  if (loading) {
     return <Grid container className={classes.root} justify="center" spacing={2}>
-        <Grid item>
-          <CircularProgress />
-        </Grid>
+      <Grid item>
+        <CircularProgress />
       </Grid>
+    </Grid>
   }
   if (errorFetchingData) {
     return <div className={classes.error}><Alert severity="error">Error while loading data</Alert></div>
-  } else {
-    return <Grid container className={classes.root} justify="center" spacing={2}>
-        { cdsServices.map(cdsService => (
-          <Grid key={cdsService.id} item>
-            <CdsServiceCard hook={cdsService.hook} id={cdsService.id} description={cdsService.description} />
-          </Grid>
-        ))}
-      </Grid>
   }
-  
+  return <Grid container className={classes.root} justify="center" spacing={2}>
+    {cdsServices.map(cdsService => (
+      <Grid key={cdsService.id} item>
+        <CdsServiceCard hook={cdsService.hook} id={cdsService.id} description={cdsService.description} />
+      </Grid>
+    ))}
+  </Grid>
+
 }

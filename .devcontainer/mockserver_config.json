@@ -1,7 +1,27 @@
 [
     {
         "httpRequest": {
-            "path": "/cds-services"
+            "method": "post",
+            "path": "/login",
+            "body": {
+                "username": "username",
+                "password": "password"
+            }
+        },
+        "httpResponse": {
+            "body": {
+                "token": "someToken"
+            }
+        }
+    },
+    {
+        "httpRequest": {
+            "path": "/cds-services",
+            "headers": {
+                "Authorization": [
+                    "Bearer someToken"
+                ]
+            }
         },
         "httpResponse": {
             "delay": {
@@ -31,14 +51,6 @@
                     }
                 ]
             }
-        }
-    },
-    {
-        "httpRequest": {
-            "path": "/simpleSecond"
-        },
-        "httpResponse": {
-            "body": "some second response"
         }
     }
 ]

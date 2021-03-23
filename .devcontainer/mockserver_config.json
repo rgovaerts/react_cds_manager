@@ -48,6 +48,17 @@
                         "hook": "appointment-book",
                         "title": "Availibilty checker",
                         "description": "Checks the agenda for availability"
+                    },
+                    {
+                        "id": "3",
+                        "hook": "appointment-book",
+                        "title": "Appointment notification",
+                        "description": "Ask if a notification needs to be sent"
+                    },
+                    {
+                        "id": "4",
+                        "hook": "encounter-start",
+                        "description": "Checks for due diagnotics tests"
                     }
                 ]
             }

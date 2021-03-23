@@ -1,51 +1,52 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import { Chip, createStyles, makeStyles, Theme } from '@material-ui/core';
+import { HookIcon } from './HookIcon';
 
-interface CdsService {
-  id: string;
-  description: string;
-  hook: string;
-  title?: string;
-  prefetch?: unknown;
+export interface CdsService {
+    id: string;
+    description: string;
+    hook: string;
+    title?: string;
+    prefetch?: unknown;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    card: {
-      padding: theme.spacing(2),
-    },
-  }),
+    createStyles({
+        card: {
+            padding: theme.spacing(2),
+        },
+    }),
 );
 
-export const CdsServiceCard = ({hook, id, description, title, prefetch}: CdsService) => {
+export const CdsServiceCard = (cdsService: CdsService) => {
 
     const classes = useStyles();
-    
+
     return <Card>
         <CardContent className={classes.card}>
-            <Typography color="textSecondary" gutterBottom>
-                { hook }
+            <Typography variant="h5" component="h5">
+                {cdsService.title}
             </Typography>
-            <Typography variant="h5" component="h2">
-                { description }
+            <Chip
+                icon={<HookIcon />}
+                label={cdsService.hook} />
+            <Typography component="p">
+                <i>
+                    id {cdsService.id}
+                </i>
             </Typography>
-            <Typography color="textSecondary">
-                id { id }
-            </Typography>
-            <Typography variant="body2" component="p">
-                { title }
+            <Typography component="p">
+                {cdsService.description}
             </Typography>
             <div>
-                { JSON.stringify(prefetch) }
+                {JSON.stringify(cdsService.prefetch)}
             </div>
         </CardContent>
-        <CardActions>
+        {/* <CardActions>
             <Button size="small">Learn More</Button>
-        </CardActions>
+        </CardActions> */}
     </Card>
 }

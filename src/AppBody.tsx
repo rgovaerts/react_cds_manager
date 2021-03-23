@@ -3,20 +3,12 @@ import React, { useEffect, useState } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import axios from 'axios';
-import { CdsServiceCard } from './CdsServiceCard';
+import { CdsService, CdsServiceCard } from './CdsServiceCard';
 import { createStyles, Grid, makeStyles, Theme } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import { useApi } from './ApiContext';
 import { useAuth } from './AuthContext';
 
-
-interface CdsService {
-  id: string;
-  description: string;
-  hook: string;
-  title?: string;
-  prefetch?: unknown;
-}
 
 interface ServerResponse {
   services: CdsService[]
@@ -74,7 +66,7 @@ export const AppBody = () => {
   return <Grid container className={classes.root} justify="center" spacing={2}>
     {cdsServices.map(cdsService => (
       <Grid key={cdsService.id} item>
-        <CdsServiceCard hook={cdsService.hook} id={cdsService.id} description={cdsService.description} />
+        <CdsServiceCard hook={cdsService.hook} id={cdsService.id} description={cdsService.description} title={cdsService.title} />
       </Grid>
     ))}
   </Grid>

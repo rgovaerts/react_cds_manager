@@ -99,7 +99,7 @@ export const LoginPage = ({ redirectedFrom = "/" }: AppPageProps) => {
                             />
                         </CardContent>
                         <CardActions>
-                            <Button onClick={() => login(username, password)} color="primary" fullWidth>Log in</Button>
+                            <Button onClick={() => login(username, password)} variant="contained" color="primary" fullWidth>Log in</Button>
                         </CardActions>
                     </div>
                 }

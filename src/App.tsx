@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createMuiTheme, createStyles, makeStyles, Theme, ThemeProvider } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -30,6 +30,21 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#000000',
+      dark: '#000000',
+      light: '#333333'
+    },
+    secondary: {
+      main: '#ff392e',
+      dark: '#b22720',
+      light: '#ff6057'
+    },
+  },
+});
+
 
 const { REACT_APP_API_BASE_URL } = process.env;
 
@@ -53,49 +68,51 @@ const App = () => {
   const handleLogout = (event: React.MouseEvent<HTMLElement>) => {
     setAuthToken(null);
   };
-  return <Router basename="/web">
-    <ApiContext.Provider value={REACT_APP_API_BASE_URL}>
-      <AuthContext.Provider value={{ authToken, setAuthToken }}>
-        <AppBar position="static">
-          <Toolbar>
-            {authToken &&
-              <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                <MenuIcon />
-              </IconButton>
-            }
-            <Typography variant="h6" className={classes.title}>
-              CDS Manager
-          </Typography>
-            {authToken &&
-              <div>
-                <IconButton
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  color="inherit"
-                  onClick={handleUserMenu}
-                >
-                  <AccountCircle />
+  return <ThemeProvider theme={theme}>
+    <Router basename="/web">
+      <ApiContext.Provider value={REACT_APP_API_BASE_URL}>
+        <AuthContext.Provider value={{ authToken, setAuthToken }}>
+          <AppBar position="static">
+            <Toolbar>
+              {authToken &&
+                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                  <MenuIcon />
                 </IconButton>
-                <Menu
-                  anchorEl={anchorEl}
-                  keepMounted
-                  open={Boolean(anchorEl)}
-                  onClose={handleUserMenuClose}
-                >
-                  <MenuItem onClick={handleLogout}>Log out</MenuItem>
-                </Menu>
-              </div>
-            }
-          </Toolbar>
-        </AppBar>
-        <Switch>
-          <GuardedRoute path="/" exact component={AppBody} />
-          <Route path="/login" exact component={LoginPage} />
-        </Switch>
-      </AuthContext.Provider>
-    </ApiContext.Provider>
-  </Router>
+              }
+              <Typography variant="h6" className={classes.title}>
+                CDS Manager
+          </Typography>
+              {authToken &&
+                <div>
+                  <IconButton
+                    aria-label="account of current user"
+                    aria-controls="menu-appbar"
+                    aria-haspopup="true"
+                    color="inherit"
+                    onClick={handleUserMenu}
+                  >
+                    <AccountCircle />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleUserMenuClose}
+                  >
+                    <MenuItem onClick={handleLogout}>Log out</MenuItem>
+                  </Menu>
+                </div>
+              }
+            </Toolbar>
+          </AppBar>
+          <Switch>
+            <GuardedRoute path="/" exact component={AppBody} />
+            <Route path="/login" exact component={LoginPage} />
+          </Switch>
+        </AuthContext.Provider>
+      </ApiContext.Provider>
+    </Router>
+  </ThemeProvider>
 }
 
 export default App;

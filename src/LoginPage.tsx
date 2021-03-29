@@ -44,6 +44,12 @@ export const LoginPage = ({ redirectedFrom = "/" }: AppPageProps) => {
             })
     }
 
+    const handleEnterKey = (e: React.KeyboardEvent): any => {
+        if (e.key === 'Enter') {
+            login(username, password);
+        }
+    }
+
     if (loading) {
         return <Grid
             container
@@ -96,6 +102,7 @@ export const LoginPage = ({ redirectedFrom = "/" }: AppPageProps) => {
                                 autoComplete="current-password"
                                 variant="outlined"
                                 onChange={e => setPassword(e.target.value)}
+                                onKeyPress={handleEnterKey}
                             />
                         </CardContent>
                         <CardActions>
